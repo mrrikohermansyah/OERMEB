@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - OER</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <a href="admin.html" class="navbar-brand">OER Admin</a>
+      <div class="navbar-user">
+        <span id="user-email" style="font-weight: 500">Loading...</span>
+        <button
+          id="logout-btn"
+          class="btn btn-secondary"
+          style="width: auto; padding: 6px 12px; font-size: 0.9rem"
+        >
+          Logout
+        </button>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div
+        style="
+          margin-bottom: 20px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <h2>Admin Dashboard</h2>
+        <button
+          id="toggle-form-btn"
+          class="btn btn-primary"
+          style="width: auto"
+        >
+          + Buat OER Baru
+        </button>
+      </div>
+
+      <div id="oer-form-container" class="form-section hidden">
+        <h3
+          style="
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+          "
+        >
+          Form OER
+        </h3>
+        <form id="oer-form">
+          <div class="form-group">
+            <label>Kategori</label>
+            <select id="category" class="form-control" required>
+              <option value="">Pilih Kategori...</option>
+              <option value="PC">PC</option>
+              <option value="NB_MN_TAB">NB / MN / TAB</option>
+              <option value="Software">Software</option>
+              <option value="Lain-lain">Lain-lain</option>
+            </select>
+          </div>
+
+          <div id="fields-PC" class="dynamic-fields hidden">
+            <div class="form-group">
+              <input
+                type="text"
+                id="pc-user-name"
+                class="form-control"
+                placeholder="Nama Pengguna PC"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                id="pc-job-title"
+                class="form-control"
+                placeholder="Job Title"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                id="pc-project"
+                class="form-control"
+                placeholder="Project"
+              />
+            </div>
+          </div>
+
+          <div id="fields-NB_MN_TAB" class="dynamic-fields hidden">
+            <div class="form-group">
+              <select id="nb-type" class="form-control">
+                <option value="">Pilih Tipe...</option>
+                <option value="NB">Notebook (NB)</option>
+                <option value="MN">Monitor (MN)</option>
+                <option value="TAB">Tablet (TAB)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                id="nb-user-name"
+                class="form-control"
+                placeholder="Nama User"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                id="nb-job-title"
+                class="form-control"
+                placeholder="Job Title"
+              />
+            </div>
+          </div>
+
+          <div id="fields-Software" class="dynamic-fields hidden">
+            <div class="form-group">
+              <label
+                style="display: block; margin-bottom: 0.5rem; font-weight: 500"
+                >Pilih Software:</label
+              >
+              <div
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px"
+              >
+                <label
+                  ><input type="checkbox" name="software" value="Navis" />
+                  Navis</label
+                >
+                <label
+                  ><input type="checkbox" name="software" value="Civil 3D" />
+                  Civil 3D</label
+                >
+                <label
+                  ><input type="checkbox" name="software" value="ACAD 2017" />
+                  ACAD 2017</label
+                >
+                <label
+                  ><input type="checkbox" name="software" value="Nitro 10" />
+                  Nitro 10</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="software"
+                    value="Excel Project"
+                  />
+                  Excel Project</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="software"
+                    value="Steel Calculator"
+                  />
+                  Steel Calculator</label
+                >
+                <label
+                  ><input type="checkbox" name="software" value="Adobe Pro" />
+                  Adobe Pro</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="software"
+                    value="Naviswork Manage"
+                  />
+                  Naviswork Manage</label
+                >
+              </div>
+            </div>
+            <div class="form-group">
+              <div id="software-custom-container">
+                <input
+                  type="text"
+                  id="software-custom-0"
+                  class="form-control software-custom-input"
+                  placeholder="Input manual nama software (jika tidak ada di list)"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                id="sw-user-name"
+                class="form-control"
+                placeholder="Nama User"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                id="sw-job-title"
+                class="form-control"
+                placeholder="Job Title"
+              />
+            </div>
+          </div>
+
+          <div id="fields-Lain-lain" class="dynamic-fields hidden">
+            <div class="form-group">
+              <label
+                style="display: block; margin-bottom: 0.5rem; font-weight: 500"
+                >Pilih Item:</label
+              >
+              <div
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px"
+              >
+                <label
+                  ><input type="checkbox" name="otherItem" value="RAM 8 GB" />
+                  RAM 8 GB</label
+                >
+                <label
+                  ><input type="checkbox" name="otherItem" value="RAM 16 GB" />
+                  RAM 16 GB</label
+                >
+                <label
+                  ><input type="checkbox" name="otherItem" value="RAM 32 GB" />
+                  RAM 32 GB</label
+                >
+                <label
+                  ><input type="checkbox" name="otherItem" value="SSD 500GB" />
+                  SSD 500GB</label
+                >
+                <label
+                  ><input type="checkbox" name="otherItem" value="SSD 1TB" />
+                  SSD 1TB</label
+                >
+                <label
+                  ><input type="checkbox" name="otherItem" value="Printer" />
+                  Printer</label
+                >
+                <label
+                  ><input type="checkbox" name="otherItem" value="Flashdisk" />
+                  Flashdisk</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="otherItem"
+                    value="Handy Talk(HT)"
+                  />
+                  Handy Talk(HT)</label
+                >
+              </div>
+            </div>
+            <div class="form-group">
+              <input
+                type="number"
+                id="other-qty"
+                class="form-control"
+                placeholder="QTY"
+                min="1"
+                value="1"
+              />
+            </div>
+            <div class="form-group">
+              <textarea
+                id="other-needs"
+                class="form-control"
+                placeholder="Keperluan OER..."
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                id="other-user-name"
+                class="form-control"
+                placeholder="Nama User"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                id="other-job-title"
+                class="form-control"
+                placeholder="Job Title"
+              />
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 20px">
+            <button type="submit" class="btn btn-success">
+              Submit Request
+            </button>
+            <button
+              type="button"
+              id="cancel-form-btn"
+              class="btn btn-secondary"
+              style="margin-top: 10px"
+            >
+              Batal
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <h2>Semua Request</h2>
+      <br />
+
+      <div class="category-section">
+        <h3 class="category-title">PC</h3>
+        <div id="list-PC"></div>
+      </div>
+
+      <div class="category-section">
+        <h3 class="category-title">NB / MN / TAB</h3>
+        <div id="list-NB_MN_TAB"></div>
+      </div>
+
+      <div class="category-section">
+        <h3 class="category-title">Software</h3>
+        <div id="list-Software"></div>
+      </div>
+
+      <div class="category-section">
+        <h3 class="category-title">Lain-lain</h3>
+        <div id="list-Lain-lain"></div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/oer-form.js"></script>
+    <script type="module" src="js/admin.js"></script>
+  </body>
+</html>
