@@ -277,6 +277,17 @@ select.form-control {
   margin-bottom: 2rem;
 }
 
+.category-section table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.category-section th,
+.category-section td {
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
 .category-title {
   font-size: 1.2rem;
   color: var(--text-secondary);
@@ -427,6 +438,29 @@ input[type="checkbox"] {
   .status-badge {
     margin-top: 4px;
     align-self: flex-start;
+  }
+
+  /* Stack admin table rows on mobile to avoid overflow */
+  .category-section table,
+  .category-section thead,
+  .category-section tbody,
+  .category-section th,
+  .category-section td,
+  .category-section tr {
+    display: block;
+  }
+  .category-section thead {
+    display: none;
+  }
+  .category-section tr {
+    margin-bottom: 12px;
+    border: 1px solid #f2f2f2;
+    border-radius: 8px;
+    padding: 8px;
+  }
+  .category-section td {
+    border: none;
+    padding: 6px 0;
   }
 }
 
