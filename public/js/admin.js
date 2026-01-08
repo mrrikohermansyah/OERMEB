@@ -141,7 +141,7 @@ function createCombinedCategorySection(category, items) {
       data.status === "Active" ? "status-active" : "status-closed";
     const nextStatus = data.status === "Active" ? "OER Close" : "Active";
     const btnClass = data.status === "Active" ? "btn-secondary" : "btn-success";
-    const btnText = data.status === "Active" ? "Close OER" : "Re-Activate";
+    const btnText = data.status === "Active" ? "Close OER" : "Re-Open";
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td style="padding:8px; border-bottom:1px solid #f2f2f2;">

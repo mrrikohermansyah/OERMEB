@@ -135,7 +135,6 @@ select.form-control {
 .btn-success {
   background-color: var(--success-color);
   color: white;
-  margin-top: 1rem;
 }
 
 .btn-success:hover {
@@ -325,6 +324,10 @@ select.form-control {
   flex: 1;
   min-width: 120px;
   margin-top: 0; /* Override default margin */
+}
+
+.auth-card .btn-success {
+  margin-top: 1rem;
 }
 
 @media (max-width: 480px) {
