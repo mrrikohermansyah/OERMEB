@@ -51,73 +51,100 @@ if (form) {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (submitBtn.disabled) return;
+
     if (!auth.currentUser) {
-      alert("Anda harus login terlebih dahulu.");
+      showToast("Anda harus login terlebih dahulu.", "error");
       return;
     }
 
     const category = categorySelect.value;
-    if (!category) return;
+    if (!category) {
+      showToast("Pilih kategori terlebih dahulu.", "error");
+      return;
+    }
 
-    const baseData = {
-      category: category,
-      status: "Active",
-      createdAt: new Date(),
-      userId: auth.currentUser.uid,
-      userEmail: auth.currentUser.email,
-    };
-
-    let specificData = {};
-
-    if (category === "PC") {
-      specificData = {
-        userName: document.getElementById("pc-user-name").value,
-        jobTitle: document.getElementById("pc-job-title").value,
-        project: document.getElementById("pc-project").value,
-      };
-    } else if (category === "NB_MN_TAB") {
-      specificData = {
-        subType: document.getElementById("nb-type").value,
-        userName: document.getElementById("nb-user-name").value,
-        jobTitle: document.getElementById("nb-job-title").value,
-      };
-    } else if (category === "Software") {
-      const checkboxes = document.querySelectorAll(
-        'input[name="software"]:checked'
-      );
-      let selectedSoftware = Array.from(checkboxes).map((cb) => cb.value);
-      const customInputs = document.querySelectorAll(
-        "#fields-Software .software-custom-input"
-      );
-      customInputs.forEach((input) => {
-        const val = input.value.trim();
-        if (val) selectedSoftware.push(val);
-      });
-
-      specificData = {
-        softwareList: selectedSoftware.join(", "),
-        userName: document.getElementById("sw-user-name").value,
-        jobTitle: document.getElementById("sw-job-title").value,
-      };
-  } else if (category === "Lain-lain") {
-      const otherChecks = document.querySelectorAll(
-        '#fields-Lain-lain input[name="otherItem"]:checked'
-      );
-      const selectedItems = Array.from(otherChecks).map((cb) => cb.value);
-      const qtyRaw = document.getElementById("other-qty").value;
-      const qty = qtyRaw ? parseInt(qtyRaw, 10) : 0;
-      specificData = {
-        otherItems: selectedItems.join(", "),
-        qty: isNaN(qty) ? 0 : qty,
-        details: document.getElementById("other-needs").value,
-        userName: document.getElementById("other-user-name").value,
-        jobTitle: document.getElementById("other-job-title").value,
-      };
-  }
-
-    const finalData = { ...baseData, ...specificData };
+    // Prevent double submit
+    submitBtn.disabled = true;
+    const originalBtnText = submitBtn.textContent;
+    submitBtn.textContent = "Mengirim...";
 
     try {
+      const departmentGlobal = document.getElementById("department");
+      let departmentVal = "";
+      if (category === "PC") {
+        departmentVal = document.getElementById("pc-department")?.value || "";
+      } else if (category === "NB_MN_TAB") {
+        departmentVal = document.getElementById("nb-department")?.value || "";
+      } else if (category === "Software") {
+        departmentVal = document.getElementById("sw-department")?.value || "";
+      } else if (category === "Lain-lain") {
+        departmentVal =
+          document.getElementById("other-department")?.value || "";
+      }
+      if (!departmentVal && departmentGlobal) {
+        departmentVal = departmentGlobal.value || "";
+      }
+      const baseData = {
+        category: category,
+        status: "Active",
+        createdAt: new Date(),
+        userId: auth.currentUser.uid,
+        userEmail: auth.currentUser.email,
+        department: departmentVal,
+      };
+
+      let specificData = {};
+
+      if (category === "PC") {
+        specificData = {
+          userName: document.getElementById("pc-user-name").value,
+          jobTitle: document.getElementById("pc-job-title").value,
+          project: document.getElementById("pc-project").value,
+        };
+      } else if (category === "NB_MN_TAB") {
+        specificData = {
+          subType: document.getElementById("nb-type").value,
+          userName: document.getElementById("nb-user-name").value,
+          jobTitle: document.getElementById("nb-job-title").value,
+        };
+      } else if (category === "Software") {
+        const checkboxes = document.querySelectorAll(
+          'input[name="software"]:checked'
+        );
+        let selectedSoftware = Array.from(checkboxes).map((cb) => cb.value);
+        const customInputs = document.querySelectorAll(
+          "#fields-Software .software-custom-input"
+        );
+        customInputs.forEach((input) => {
+          const val = input.value.trim();
+          if (val) selectedSoftware.push(val);
+        });
+
+        specificData = {
+          softwareList: selectedSoftware.join(", "),
+          userName: document.getElementById("sw-user-name").value,
+          jobTitle: document.getElementById("sw-job-title").value,
+        };
+      } else if (category === "Lain-lain") {
+        const otherChecks = document.querySelectorAll(
+          '#fields-Lain-lain input[name="otherItem"]:checked'
+        );
+        const selectedItems = Array.from(otherChecks).map((cb) => cb.value);
+        const qtyRaw = document.getElementById("other-qty").value;
+        const qty = qtyRaw ? parseInt(qtyRaw, 10) : 0;
+        specificData = {
+          otherItems: selectedItems.join(", "),
+          qty: isNaN(qty) ? 0 : qty,
+          details: document.getElementById("other-needs").value,
+          userName: document.getElementById("other-user-name").value,
+          jobTitle: document.getElementById("other-job-title").value,
+        };
+      }
+
+      const finalData = { ...baseData, ...specificData };
+
       await addDoc(collection(db, "requests"), finalData);
       showToast("Request berhasil dikirim!", "success");
       form.reset();
@@ -127,6 +154,10 @@ if (form) {
     } catch (error) {
       console.error("Error adding document: ", error);
       showToast("Gagal mengirim request: " + error.message, "error");
+    } finally {
+      // Re-enable button
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalBtnText;
     }
   });
 }
