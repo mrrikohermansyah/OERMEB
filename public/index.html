@@ -4,6 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard - OER</title>
+    <script>
+      if (
+        location.protocol === "http:" &&
+        !["localhost", "127.0.0.1"].includes(location.hostname)
+      ) {
+        location.href =
+          "https://" +
+          location.host +
+          location.pathname +
+          location.search +
+          location.hash;
+      }
+    </script>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="icon" type="image/png" href="images/meitech.png" />
   </head>
