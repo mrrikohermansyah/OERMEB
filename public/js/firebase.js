@@ -21,6 +21,10 @@ import {
   orderBy,
   onSnapshot,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import {
+  getFunctions,
+  httpsCallable,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js";
 
 // TODO: Replace with your actual Firebase project config
 const firebaseConfig = {
@@ -37,10 +41,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const functions = getFunctions(app);
 
 export {
   auth,
   db,
+  functions,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -55,4 +61,5 @@ export {
   where,
   orderBy,
   onSnapshot,
+  httpsCallable,
 };

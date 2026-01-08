@@ -1,8 +1,8 @@
 import {
   auth,
   db,
+  functions,
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
   onAuthStateChanged,
   doc,
   updateDoc,
@@ -12,6 +12,7 @@ import {
   getDocs,
   query,
   where,
+  httpsCallable,
 } from "./firebase.js";
 import {
   setDoc,
@@ -19,7 +20,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { showToast, setPendingToast, checkPendingToast } from "./toast.js";
 
-const ACCESS_CODE = "OER2024"; // Hardcoded for demo
+const IS_LOCAL = ["localhost", "127.0.0.1"].includes(location.hostname);
+const LOCAL_ACCESS_CODE = "OER2024";
 const ADMIN_EMAILS = ["devi.armanda@meitech-ekabintan.com"]; // Simple admin check or use Firestore role
 
 // Auth State Listener
@@ -109,36 +111,49 @@ if (registerForm) {
     const accessCode = document.getElementById("access-code").value;
     const errorMsg = document.getElementById("error-msg");
 
-    if (accessCode !== ACCESS_CODE) {
-      errorMsg.style.display = "block";
-      errorMsg.textContent = "Password akses salah!";
-      return;
-    }
-
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
-
-      // Create user document
-      // Check if email is in admin list to auto-assign admin role (optional helper)
-      const role = ADMIN_EMAILS.includes(email) ? "admin" : "user";
-
-      await setDoc(doc(db, "users", user.uid), {
-        email: email,
-        role: role,
-        createdAt: new Date(),
-      });
-
-      setPendingToast("Registrasi berhasil!", "success");
+      if (IS_LOCAL) {
+        if (accessCode !== LOCAL_ACCESS_CODE) {
+          errorMsg.style.display = "block";
+          errorMsg.textContent = "Password akses salah!";
+          return;
+        }
+        const role = ADMIN_EMAILS.includes(email) ? "admin" : "user";
+        const { createUserWithEmailAndPassword } = await import(
+          "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"
+        );
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const user = userCredential.user;
+        await setDoc(doc(db, "users", user.uid), {
+          email,
+          role,
+          createdAt: new Date(),
+        });
+        setPendingToast("Registrasi berhasil!", "success");
+      } else {
+        const registerFn = httpsCallable(functions, "registerUserWithCode");
+        const res = await registerFn({ email, password, code: accessCode });
+        if (!res?.data?.success) {
+          throw new Error(res?.data?.message || "Registrasi ditolak");
+        }
+        await signInWithEmailAndPassword(auth, email, password);
+        setPendingToast("Registrasi berhasil!", "success");
+      }
       // Redirect handled by onAuthStateChanged
     } catch (error) {
       console.error(error);
       errorMsg.style.display = "block";
-      errorMsg.textContent = "Registrasi gagal: " + error.message;
+      errorMsg.textContent =
+        "Registrasi gagal: " +
+        (error?.message?.includes("not found") ||
+        error?.message?.includes("function") ||
+        error?.code === "functions/not-found"
+          ? "Layanan registrasi tidak tersedia. Hubungi Admin."
+          : error.message);
     }
   });
 }
