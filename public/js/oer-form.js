@@ -7,6 +7,74 @@ const formContainer = document.getElementById("oer-form-container");
 const form = document.getElementById("oer-form");
 const categorySelect = document.getElementById("category");
 
+function getDeptId(cat) {
+  const map = {
+    PC: "pc-department",
+    NB_MN_TAB: "nb-department",
+    Software: "sw-department",
+    "Lain-lain": "other-department",
+  };
+  const cid = map[cat];
+  if (cid && document.getElementById(cid)) return cid;
+  return "department";
+}
+
+function clearRequired() {
+  const ids = [
+    "pc-user-name",
+    "pc-job-title",
+    "pc-project",
+    "nb-type",
+    "nb-user-name",
+    "nb-job-title",
+    "sw-user-name",
+    "sw-job-title",
+    "other-qty",
+    "other-needs",
+    "other-user-name",
+    "other-job-title",
+    "pc-department",
+    "nb-department",
+    "sw-department",
+    "other-department",
+    "department",
+  ];
+  ids.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.required = false;
+  });
+}
+
+function applyRequired(cat) {
+  clearRequired();
+  const deptId = getDeptId(cat);
+  const deptEl = document.getElementById(deptId);
+  if (deptEl) deptEl.required = true;
+  if (cat === "PC") {
+    ["pc-user-name", "pc-job-title", "pc-project"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.required = true;
+    });
+  } else if (cat === "NB_MN_TAB") {
+    ["nb-type", "nb-user-name", "nb-job-title"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.required = true;
+    });
+  } else if (cat === "Software") {
+    ["sw-user-name", "sw-job-title"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.required = true;
+    });
+  } else if (cat === "Lain-lain") {
+    ["other-qty", "other-needs", "other-user-name", "other-job-title"].forEach(
+      (id) => {
+        const el = document.getElementById(id);
+        if (el) el.required = true;
+      }
+    );
+  }
+}
+
 // Toggle Form
 if (toggleBtn) {
   toggleBtn.addEventListener("click", () => {
@@ -37,6 +105,7 @@ if (categorySelect) {
       if (target) {
         target.classList.remove("hidden");
       }
+      applyRequired(category);
     }
   });
 }
@@ -86,6 +155,7 @@ if (form) {
       if (!departmentVal && departmentGlobal) {
         departmentVal = departmentGlobal.value || "";
       }
+      applyRequired(category);
       const baseData = {
         category: category,
         status: "Active",

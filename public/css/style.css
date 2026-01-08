@@ -142,6 +142,13 @@ select.form-control {
   filter: brightness(0.9);
 }
 
+.btn-success:disabled {
+  background-color: #d8dadf;
+  color: #4b4f56;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
 .btn-secondary {
   background-color: #e4e6eb;
   color: #4b4f56;
