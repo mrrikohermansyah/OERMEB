@@ -121,6 +121,7 @@ function createCombinedCategorySection(category, items) {
             <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">User</th>
             <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Job Title</th>
             <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Department</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">No Transmittal</th>
             <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Status</th>
             <th style="text-align:right; padding:8px; border-bottom:1px solid #eee;">Aksi</th>
           </tr>
@@ -175,18 +176,30 @@ function createCombinedCategorySection(category, items) {
        <td style="padding:8px; border-bottom:1px solid #f2f2f2;">${
          data.department || "-"
        }</td>
-      <td style="padding:8px; border-bottom:1px solid #f2f2f2;">
+      <td style="padding:8px; border-bottom:1px solid #f2f2f2;">${
+        data.transmittalNo || "-"
+      }</td>
+      <td style="padding:8px; border-bottom:1px solid #f2f2f2; vertical-align:middle;">
         <span class="status-badge ${statusClass}">${data.status}</span>
       </td>
-      <td style="padding:8px; border-bottom:1px solid #f2f2f2; text-align:right;">
-        <button class="btn ${btnClass}" style="width:auto; padding:6px 12px; font-size:0.9rem; margin-right:8px;" data-action="toggle" data-id="${docId}" data-next="${nextStatus}">${btnText}</button>
-        <button class="btn" style="width:36px; height:36px; padding:0; display:inline-flex; align-items:center; justify-content:center; background-color: var(--danger-color); color:#fff; border-radius:6px;" data-action="delete" data-id="${docId}" aria-label="Delete">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="white">
-            <rect x="7" y="9" width="10" height="11" rx="2"></rect>
-            <rect x="8" y="5" width="8" height="3" rx="1"></rect>
-            <rect x="10" y="3" width="4" height="2" rx="1"></rect>
-          </svg>
-        </button>
+      <td style="padding:8px; border-bottom:1px solid #f2f2f2; text-align:right; vertical-align:middle;">
+        <div style="display:inline-flex; align-items:center; justify-content:flex-end; gap:8px;">
+          <button class="btn ${btnClass}" style="width:auto; height:36px; min-height:36px; padding:0 12px; font-size:0.7rem;" data-action="toggle" data-id="${docId}" data-next="${nextStatus}">${btnText}</button>
+          <button class="btn" style="width:36px; height:36px; min-height:36px; padding:0; display:inline-flex; align-items:center; justify-content:center; background-color: var(--primary-color); color:#fff; border-radius:6px;" data-action="edit-transmittal" data-id="${docId}" data-current="${
+      data.transmittalNo || ""
+    }" aria-label="Edit Transmittal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="white">
+              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.83z"/>
+            </svg>
+          </button>
+          <button class="btn" style="width:36px; height:36px; min-height:36px; padding:0; display:inline-flex; align-items:center; justify-content:center; background-color: var(--danger-color); color:#fff; border-radius:6px;" data-action="delete" data-id="${docId}" aria-label="Delete">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="white">
+              <rect x="7" y="9" width="10" height="11" rx="2"></rect>
+              <rect x="8" y="5" width="8" height="3" rx="1"></rect>
+              <rect x="10" y="3" width="4" height="2" rx="1"></rect>
+            </svg>
+          </button>
+        </div>
       </td>
     `;
     tbody.appendChild(tr);
@@ -240,6 +253,43 @@ function createCombinedCategorySection(category, items) {
       } else {
         if (confirm("Anda yakin ingin menghapus request ini?")) {
           doDelete();
+        }
+      }
+    });
+  });
+  const editButtons = div.querySelectorAll(
+    'button[data-action="edit-transmittal"][data-id]'
+  );
+  editButtons.forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const id = btn.getAttribute("data-id");
+      const current = btn.getAttribute("data-current") || "";
+      const saveValue = async (value) => {
+        try {
+          await updateDoc(doc(db, "requests", id), {
+            transmittalNo: (value || "").trim(),
+          });
+          showToast("No Transmittal diperbarui", "success");
+        } catch (error) {
+          alert("Gagal menyimpan No Transmittal: " + error.message);
+        }
+      };
+      if (typeof Swal !== "undefined") {
+        const result = await Swal.fire({
+          title: "Edit No Transmittal",
+          input: "text",
+          inputValue: current,
+          showCancelButton: true,
+          confirmButtonText: "Simpan",
+          cancelButtonText: "Batal",
+        });
+        if (result.isConfirmed) {
+          await saveValue(result.value);
+        }
+      } else {
+        const value = prompt("Masukkan No Transmittal:", current);
+        if (value !== null) {
+          await saveValue(value);
         }
       }
     });
