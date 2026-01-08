@@ -1,33 +1,46 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - OER</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="icon" type="image/png" href="images/meitech.png" />
+  </head>
+  <body>
     <div class="auth-container">
-        <div class="auth-header">
-            <h1>OER</h1>
-            <p>Office Equipment Request</p>
-        </div>
-        <div class="auth-card">
-            <h2 style="margin-bottom: 1rem;">Login</h2>
-            <div id="error-msg" class="error-msg">Email atau password salah.</div>
-            <form id="login-form">
-                <div class="form-group">
-                    <input type="email" id="email" class="form-control" placeholder="Email" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" id="password" class="form-control" placeholder="Password" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Masuk</button>
-            </form>
-            <div class="divider"></div>
-            <a href="register.html" class="btn btn-success">Buat Akun Baru</a>
-        </div>
+      <div class="auth-header">
+        <h1>OER</h1>
+        <p>Office Equipment Request</p>
+      </div>
+      <div class="auth-card">
+        <h2 style="margin-bottom: 1rem">Login</h2>
+        <div id="error-msg" class="error-msg">Email atau password salah.</div>
+        <form id="login-form">
+          <div class="form-group">
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              placeholder="Email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="password"
+              id="password"
+              class="form-control"
+              placeholder="Password"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">Masuk</button>
+        </form>
+        <div class="divider"></div>
+        <a href="register.html" class="btn btn-success">Buat Akun Baru</a>
+      </div>
     </div>
     <script type="module" src="js/auth.js"></script>
-</body>
+  </body>
 </html>

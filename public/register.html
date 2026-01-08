@@ -1,39 +1,76 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register - OER</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="icon" type="image/png" href="images/meitech.png" />
+  </head>
+  <body>
     <div class="auth-container">
-        <div class="auth-header">
-            <h1>OER</h1>
-            <p>Office Equipment Request</p>
+      <div class="auth-header">
+        <h1>OER</h1>
+        <p>Office Equipment Request</p>
+      </div>
+      <div class="auth-card">
+        <h2 style="margin-bottom: 1rem">Daftar Akun</h2>
+        <p style="font-size: 0.9rem; color: #65676b; margin-bottom: 1rem">
+          Cepat dan mudah.
+        </p>
+        <div id="error-msg" class="error-msg"></div>
+        <form id="register-form">
+          <div class="form-group">
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              placeholder="Email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="password"
+              id="password"
+              class="form-control"
+              placeholder="Password (min 6 karakter)"
+              required
+              minlength="6"
+            />
+          </div>
+          <div class="form-group">
+            <label
+              for="access-code"
+              style="
+                font-size: 0.9rem;
+                font-weight: bold;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >Password Akses Pendaftaran</label
+            >
+            <input
+              type="password"
+              id="access-code"
+              class="form-control"
+              placeholder="Masukkan kode akses..."
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-success" style="margin-top: 0">
+            Daftar
+          </button>
+        </form>
+        <div style="margin-top: 1rem">
+          <a
+            href="login.html"
+            style="text-decoration: none; color: var(--primary-color)"
+            >Sudah punya akun?</a
+          >
         </div>
-        <div class="auth-card">
-            <h2 style="margin-bottom: 1rem;">Daftar Akun</h2>
-            <p style="font-size: 0.9rem; color: #65676b; margin-bottom: 1rem;">Cepat dan mudah.</p>
-            <div id="error-msg" class="error-msg"></div>
-            <form id="register-form">
-                <div class="form-group">
-                    <input type="email" id="email" class="form-control" placeholder="Email" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" id="password" class="form-control" placeholder="Password (min 6 karakter)" required minlength="6">
-                </div>
-                <div class="form-group">
-                    <label for="access-code" style="font-size: 0.9rem; font-weight: bold; display: block; margin-bottom: 5px;">Password Akses Pendaftaran</label>
-                    <input type="password" id="access-code" class="form-control" placeholder="Masukkan kode akses..." required>
-                </div>
-                <button type="submit" class="btn btn-success" style="margin-top: 0;">Daftar</button>
-            </form>
-            <div style="margin-top: 1rem;">
-                <a href="login.html" style="text-decoration: none; color: var(--primary-color);">Sudah punya akun?</a>
-            </div>
-        </div>
+      </div>
     </div>
     <script type="module" src="js/auth.js"></script>
-</body>
+  </body>
 </html>
