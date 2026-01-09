@@ -344,31 +344,141 @@
         </form>
       </div>
 
-      <h2>Semua Request</h2>
-      <br />
-
-      <div class="category-section">
-        <h3 class="category-title">PC</h3>
-        <div id="list-PC"></div>
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+        "
+      >
+        <h2>Semua Request</h2>
+        <button id="export-all-btn" class="btn btn-primary" style="width: auto">
+          Export All to Image
+        </button>
       </div>
 
-      <div class="category-section">
-        <h3 class="category-title">NB / MN / TAB</h3>
-        <div id="list-NB_MN_TAB"></div>
-      </div>
+      <div id="all-requests-container">
+        <div class="category-section" id="section-PC">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              border-bottom: 2px solid #ced0d4;
+              margin-bottom: 1rem;
+              padding-bottom: 0.5rem;
+            "
+          >
+            <h3
+              class="category-title"
+              style="border: none; margin: 0; padding: 0"
+            >
+              PC
+            </h3>
+            <button
+              class="btn btn-secondary export-btn"
+              data-target="section-PC"
+              data-filename="Requests_PC"
+              style="width: auto; padding: 6px 12px; font-size: 0.9rem"
+            >
+              Export to Image
+            </button>
+          </div>
+          <div id="list-PC"></div>
+        </div>
 
-      <div class="category-section">
-        <h3 class="category-title">Software</h3>
-        <div id="list-Software"></div>
-      </div>
+        <div class="category-section" id="section-NB_MN_TAB">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              border-bottom: 2px solid #ced0d4;
+              margin-bottom: 1rem;
+              padding-bottom: 0.5rem;
+            "
+          >
+            <h3
+              class="category-title"
+              style="border: none; margin: 0; padding: 0"
+            >
+              NB / MN / TAB
+            </h3>
+            <button
+              class="btn btn-secondary export-btn"
+              data-target="section-NB_MN_TAB"
+              data-filename="Requests_NB_MN_TAB"
+              style="width: auto; padding: 6px 12px; font-size: 0.9rem"
+            >
+              Export to Image
+            </button>
+          </div>
+          <div id="list-NB_MN_TAB"></div>
+        </div>
 
-      <div class="category-section">
-        <h3 class="category-title">Lain-lain</h3>
-        <div id="list-Lain-lain"></div>
+        <div class="category-section" id="section-Software">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              border-bottom: 2px solid #ced0d4;
+              margin-bottom: 1rem;
+              padding-bottom: 0.5rem;
+            "
+          >
+            <h3
+              class="category-title"
+              style="border: none; margin: 0; padding: 0"
+            >
+              Software
+            </h3>
+            <button
+              class="btn btn-secondary export-btn"
+              data-target="section-Software"
+              data-filename="Requests_Software"
+              style="width: auto; padding: 6px 12px; font-size: 0.9rem"
+            >
+              Export to Image
+            </button>
+          </div>
+          <div id="list-Software"></div>
+        </div>
+
+        <div class="category-section" id="section-Lain-lain">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              border-bottom: 2px solid #ced0d4;
+              margin-bottom: 1rem;
+              padding-bottom: 0.5rem;
+            "
+          >
+            <h3
+              class="category-title"
+              style="border: none; margin: 0; padding: 0"
+            >
+              Lain-lain
+            </h3>
+            <button
+              class="btn btn-secondary export-btn"
+              data-target="section-Lain-lain"
+              data-filename="Requests_Lain_lain"
+              style="width: auto; padding: 6px 12px; font-size: 0.9rem"
+            >
+              Export to Image
+            </button>
+          </div>
+          <div id="list-Lain-lain"></div>
+        </div>
       </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script type="module" src="js/auth.js"></script>
     <script type="module" src="js/oer-form.js"></script>
     <script type="module" src="js/admin.js"></script>

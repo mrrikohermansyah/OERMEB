@@ -312,3 +312,65 @@ function createCombinedCategorySection(category, items) {
   });
   return div;
 }
+
+// Export Functionality
+function exportToImage(elementId, filename) {
+  const element = document.getElementById(elementId);
+  if (!element) {
+    console.error(`Element with id ${elementId} not found`);
+    return;
+  }
+
+  if (typeof html2canvas === "undefined") {
+    alert("Library html2canvas belum dimuat. Silakan refresh halaman.");
+    return;
+  }
+
+  html2canvas(element, {
+    ignoreElements: (node) => {
+      // Ignore export buttons in the screenshot
+      return (
+        node.tagName === "BUTTON" &&
+        (node.textContent.includes("Export") ||
+          node.classList.contains("export-btn"))
+      );
+    },
+    backgroundColor: "#f0f2f5",
+    scale: 2,
+  })
+    .then((canvas) => {
+      const link = document.createElement("a");
+      link.download = `${filename}_${new Date()
+        .toISOString()
+        .slice(0, 10)}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    })
+    .catch((err) => {
+      console.error("Export failed:", err);
+      alert("Gagal mengekspor gambar.");
+    });
+}
+
+// Make it global for onclick handlers
+window.exportToImage = exportToImage;
+
+// Since it's a module, DOMContentLoaded might have already fired or behaves differently.
+// We can also just run the check immediately.
+const exportAllBtn = document.getElementById("export-all-btn");
+if (exportAllBtn) {
+  exportAllBtn.addEventListener("click", () => {
+    exportToImage("all-requests-container", "All_Requests_Admin");
+  });
+}
+
+const exportBtns = document.querySelectorAll(".export-btn");
+exportBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const targetId = btn.getAttribute("data-target");
+    const filename = btn.getAttribute("data-filename");
+    if (targetId && filename) {
+      exportToImage(targetId, filename);
+    }
+  });
+});
