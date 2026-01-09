@@ -68,14 +68,28 @@ function loadAllRequests() {
       return;
     }
 
+    const allDocs = [];
+    querySnapshot.forEach((docSnap) => {
+      allDocs.push({
+        docId: docSnap.id,
+        data: docSnap.data(),
+      });
+    });
+
+    // Sort by createdAt desc
+    allDocs.sort((a, b) => {
+      const ta = a.data.createdAt?.toMillis ? a.data.createdAt.toMillis() : 0;
+      const tb = b.data.createdAt?.toMillis ? b.data.createdAt.toMillis() : 0;
+      return tb - ta;
+    });
+
     const pcItems = [];
     const nbItems = [];
     const swItems = [];
     const otherItems = [];
+    const unknownItems = [];
 
-    querySnapshot.forEach((docSnap) => {
-      const data = docSnap.data();
-      const docId = docSnap.id;
+    allDocs.forEach(({ docId, data }) => {
       if (data.category === "PC") {
         pcItems.push({ docId, data });
       } else if (data.category === "NB_MN_TAB") {
@@ -84,6 +98,8 @@ function loadAllRequests() {
         swItems.push({ docId, data });
       } else if (data.category === "Lain-lain") {
         otherItems.push({ docId, data });
+      } else {
+        unknownItems.push({ docId, data });
       }
     });
 

@@ -43,14 +43,10 @@ onAuthStateChanged(auth, async (user) => {
       userDoc = await getDoc(ref);
     }
     const role = userDoc.data()?.role;
-    if (role !== "admin") {
-      alert("Akses ditolak. Khusus Admin.");
-      isRedirecting = true;
-      try {
-        await auth.signOut();
-      } catch (e) {}
-      window.location.href = "login.html";
-    } else {
+
+    // Role-based routing
+    if (role === "admin") {
+      // Admin Logic: Redirect to admin dashboard if on public pages
       if (
         filename === "login.html" ||
         filename === "register.html" ||
@@ -58,11 +54,25 @@ onAuthStateChanged(auth, async (user) => {
         filename === "index.html"
       ) {
         if (sessionStorage.getItem("loggingIn")) {
-          setPendingToast("Login berhasil!", "success");
+          setPendingToast("Login berhasil! (Admin)", "success");
           sessionStorage.removeItem("loggingIn");
         }
         isRedirecting = true;
         window.location.href = "admin.html";
+      }
+    } else {
+      // User Logic: Redirect to user dashboard if on login/register, or block admin access
+      if (filename === "admin.html") {
+        alert("Akses ditolak. Khusus Admin.");
+        isRedirecting = true;
+        window.location.href = "index.html";
+      } else if (filename === "login.html" || filename === "register.html") {
+        if (sessionStorage.getItem("loggingIn")) {
+          setPendingToast("Login berhasil!", "success");
+          sessionStorage.removeItem("loggingIn");
+        }
+        isRedirecting = true;
+        window.location.href = "index.html";
       }
     }
   } else {
