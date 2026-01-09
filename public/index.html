@@ -25,12 +25,8 @@
     <nav class="navbar">
       <a href="index.html" class="navbar-brand">OER</a>
       <div class="navbar-user">
-        <span id="user-email" style="font-weight: 500">Loading...</span>
-        <button
-          id="logout-btn"
-          class="btn btn-secondary"
-          style="width: auto; padding: 6px 12px; font-size: 0.9rem"
-        >
+        <span id="user-email">Loading...</span>
+        <button id="logout-btn" class="btn btn-secondary btn-auto btn-sm">
           Logout
         </button>
       </div>
@@ -38,35 +34,16 @@
 
     <div class="container">
       <!-- Action Bar -->
-      <div
-        style="
-          margin-bottom: 20px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        "
-      >
+      <div class="page-header">
         <h2>Dashboard</h2>
-        <button
-          id="toggle-form-btn"
-          class="btn btn-primary"
-          style="width: auto"
-        >
+        <button id="toggle-form-btn" class="btn btn-primary btn-auto">
           + Buat Request Baru
         </button>
       </div>
 
       <!-- Form Section (Hidden by default) -->
       <div id="oer-form-container" class="form-section hidden">
-        <h3
-          style="
-            margin-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 0.5rem;
-          "
-        >
-          Form Request
-        </h3>
+        <h3 class="section-title">Form Request</h3>
         <form id="oer-form">
           <!-- 1. Kategori -->
           <div class="form-group">
@@ -151,13 +128,8 @@
           <!-- Software Fields -->
           <div id="fields-Software" class="dynamic-fields hidden">
             <div class="form-group">
-              <label
-                style="display: block; margin-bottom: 0.5rem; font-weight: 500"
-                >Pilih Software:</label
-              >
-              <div
-                style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px"
-              >
+              <label class="form-label">Pilih Software:</label>
+              <div class="checkbox-grid">
                 <label
                   ><input type="checkbox" name="software" value="Navis" />
                   Navis</label
@@ -235,13 +207,8 @@
           <!-- Lain-lain Fields -->
           <div id="fields-Lain-lain" class="dynamic-fields hidden">
             <div class="form-group">
-              <label
-                style="display: block; margin-bottom: 0.5rem; font-weight: 500"
-                >Pilih Item:</label
-              >
-              <div
-                style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px"
-              >
+              <label class="form-label">Pilih Item:</label>
+              <div class="checkbox-grid">
                 <label
                   ><input type="checkbox" name="otherItem" value="RAM 8 GB" />
                   RAM 8 GB</label

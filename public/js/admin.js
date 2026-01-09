@@ -18,6 +18,21 @@ import {
 const userEmailSpan = document.getElementById("user-email");
 
 const ADMIN_EMAILS = ["devi.armanda@meitech-ekabintan.com"];
+const IT_MEMBERS = [
+  "Riko Hermansyah",
+  "Abdurahman Hakim",
+  "Moch Wahyu Nugroho",
+  "Ade Reinalwi",
+];
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
@@ -138,6 +153,7 @@ function createCombinedCategorySection(category, items) {
             <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Job Title</th>
             <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Department</th>
             <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">No Transmittal</th>
+            <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Done By IT</th>
             <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Status</th>
             <th style="text-align:right; padding:8px; border-bottom:1px solid #eee;">Aksi</th>
           </tr>
@@ -189,11 +205,14 @@ function createCombinedCategorySection(category, items) {
        <td style="padding:8px; border-bottom:1px solid #f2f2f2;">${
          data.jobTitle || "-"
        }</td>
-       <td style="padding:8px; border-bottom:1px solid #f2f2f2;">${
-         data.department || "-"
-       }</td>
+      <td style="padding:8px; border-bottom:1px solid #f2f2f2;">${
+        data.department || "-"
+      }</td>
       <td style="padding:8px; border-bottom:1px solid #f2f2f2;">${
         data.transmittalNo || "-"
+      }</td>
+      <td style="padding:8px; border-bottom:1px solid #f2f2f2;">${
+        data.doneBy || "-"
       }</td>
       <td style="padding:8px; border-bottom:1px solid #f2f2f2; vertical-align:middle;">
         <span class="status-badge ${statusClass}">${data.status}</span>
@@ -203,7 +222,9 @@ function createCombinedCategorySection(category, items) {
           <button class="btn ${btnClass}" style="width:auto; height:36px; min-height:36px; padding:0 12px; font-size:0.7rem;" data-action="toggle" data-id="${docId}" data-next="${nextStatus}">${btnText}</button>
           <button class="btn" style="width:36px; height:36px; min-height:36px; padding:0; display:inline-flex; align-items:center; justify-content:center; background-color: var(--primary-color); color:#fff; border-radius:6px;" data-action="edit-transmittal" data-id="${docId}" data-current="${
       data.transmittalNo || ""
-    }" aria-label="Edit Transmittal">
+    }" data-current-doneby="${
+      data.doneBy || ""
+    }" aria-label="Edit Transmittal / Done By">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="white">
               <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.83z"/>
             </svg>
@@ -280,33 +301,74 @@ function createCombinedCategorySection(category, items) {
     btn.addEventListener("click", async () => {
       const id = btn.getAttribute("data-id");
       const current = btn.getAttribute("data-current") || "";
+      const currentDoneBy = btn.getAttribute("data-current-doneby") || "";
       const saveValue = async (value) => {
         try {
+          const transmittalNo = (value?.transmittalNo || "").trim();
+          const doneBy = (value?.doneBy || "").trim();
           await updateDoc(doc(db, "requests", id), {
-            transmittalNo: (value || "").trim(),
+            transmittalNo,
+            doneBy,
           });
-          showToast("No Transmittal diperbarui", "success");
+          showToast("No Transmittal & Done By diperbarui", "success");
         } catch (error) {
-          alert("Gagal menyimpan No Transmittal: " + error.message);
+          alert("Gagal menyimpan perubahan: " + error.message);
         }
       };
       if (typeof Swal !== "undefined") {
+        const optionsHtml = [
+          `<option value="" ${
+            currentDoneBy ? "" : "selected"
+          }>Pilih IT Member...</option>`,
+          ...IT_MEMBERS.map(
+            (name) =>
+              `<option value="${name}" ${
+                name === currentDoneBy ? "selected" : ""
+              }>${name}</option>`
+          ),
+        ].join("");
+
         const result = await Swal.fire({
-          title: "Edit No Transmittal",
-          input: "text",
-          inputValue: current,
+          title: "Add No Transmittal & IT Member",
+          html: `
+            <input id="swal-transmittal" class="swal2-input" style="width: calc(100% - 2em); margin: 1em 1em 0; box-sizing: border-box;" placeholder="No Transmittal" value="${escapeHtml(
+              current
+            )}">
+            <select id="swal-doneby" class="swal2-select" style="width: calc(100% - 2em); margin: 1em 1em 0; box-sizing: border-box;">
+              ${optionsHtml}
+            </select>
+          `,
+          focusConfirm: false,
           showCancelButton: true,
           confirmButtonText: "Simpan",
           cancelButtonText: "Batal",
+          preConfirm: () => {
+            const transmittalNo =
+              document.getElementById("swal-transmittal")?.value || "";
+            const doneBy = document.getElementById("swal-doneby")?.value || "";
+            if (!doneBy) {
+              Swal.showValidationMessage("Pilih IT Member");
+              return;
+            }
+            return { transmittalNo, doneBy };
+          },
         });
         if (result.isConfirmed) {
           await saveValue(result.value);
         }
       } else {
-        const value = prompt("Masukkan No Transmittal:", current);
-        if (value !== null) {
-          await saveValue(value);
+        const transmittalNo = prompt("Masukkan No Transmittal:", current);
+        if (transmittalNo === null) return;
+        const doneBy = prompt(
+          `Done By (pilih salah satu):\n- ${IT_MEMBERS.join("\n- ")}`,
+          currentDoneBy
+        );
+        if (doneBy === null) return;
+        if (!IT_MEMBERS.includes(doneBy)) {
+          alert("Done By harus pilih salah satu IT Member.");
+          return;
         }
+        await saveValue({ transmittalNo, doneBy });
       }
     });
   });

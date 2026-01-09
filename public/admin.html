@@ -25,46 +25,23 @@
     <nav class="navbar">
       <a href="admin.html" class="navbar-brand">OER Admin</a>
       <div class="navbar-user">
-        <span id="user-email" style="font-weight: 500">Loading...</span>
-        <button
-          id="logout-btn"
-          class="btn btn-secondary"
-          style="width: auto; padding: 6px 12px; font-size: 0.9rem"
-        >
+        <span id="user-email">Loading...</span>
+        <button id="logout-btn" class="btn btn-secondary btn-auto btn-sm">
           Logout
         </button>
       </div>
     </nav>
 
     <div class="container">
-      <div
-        style="
-          margin-bottom: 20px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        "
-      >
+      <div class="page-header">
         <h2>Admin Dashboard</h2>
-        <button
-          id="toggle-form-btn"
-          class="btn btn-primary"
-          style="width: auto"
-        >
+        <button id="toggle-form-btn" class="btn btn-primary btn-auto">
           + Buat OER Baru
         </button>
       </div>
 
       <div id="oer-form-container" class="form-section hidden">
-        <h3
-          style="
-            margin-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 0.5rem;
-          "
-        >
-          Form OER
-        </h3>
+        <h3 class="section-title">Form OER</h3>
         <form id="oer-form">
           <div class="form-group">
             <label>Kategori</label>
@@ -149,13 +126,8 @@
 
           <div id="fields-Software" class="dynamic-fields hidden">
             <div class="form-group">
-              <label
-                style="display: block; margin-bottom: 0.5rem; font-weight: 500"
-                >Pilih Software:</label
-              >
-              <div
-                style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px"
-              >
+              <label class="form-label">Pilih Software:</label>
+              <div class="checkbox-grid">
                 <label
                   ><input type="checkbox" name="software" value="Navis" />
                   Navis</label
@@ -240,13 +212,8 @@
 
           <div id="fields-Lain-lain" class="dynamic-fields hidden">
             <div class="form-group">
-              <label
-                style="display: block; margin-bottom: 0.5rem; font-weight: 500"
-                >Pilih Item:</label
-              >
-              <div
-                style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px"
-              >
+              <label class="form-label">Pilih Item:</label>
+              <div class="checkbox-grid">
                 <label
                   ><input type="checkbox" name="otherItem" value="RAM 8 GB" />
                   RAM 8 GB</label
@@ -328,7 +295,7 @@
             </div>
           </div>
 
-          <div class="form-group" style="margin-top: 20px">
+          <div class="form-actions">
             <button type="submit" class="btn btn-success">
               Submit Request
             </button>
@@ -336,7 +303,6 @@
               type="button"
               id="cancel-form-btn"
               class="btn btn-secondary"
-              style="margin-top: 10px"
             >
               Batal
             </button>
@@ -344,43 +310,21 @@
         </form>
       </div>
 
-      <div
-        style="
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 20px;
-        "
-      >
+      <div class="page-header">
         <h2>Semua Request</h2>
-        <button id="export-all-btn" class="btn btn-primary" style="width: auto">
+        <button id="export-all-btn" class="btn btn-primary btn-auto">
           Export All to Image
         </button>
       </div>
 
       <div id="all-requests-container">
         <div class="category-section" id="section-PC">
-          <div
-            style="
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              border-bottom: 2px solid #ced0d4;
-              margin-bottom: 1rem;
-              padding-bottom: 0.5rem;
-            "
-          >
-            <h3
-              class="category-title"
-              style="border: none; margin: 0; padding: 0"
-            >
-              PC
-            </h3>
+          <div class="category-header">
+            <h3 class="category-title">PC</h3>
             <button
-              class="btn btn-secondary export-btn"
+              class="btn btn-secondary btn-auto btn-sm export-btn"
               data-target="section-PC"
               data-filename="Requests_PC"
-              style="width: auto; padding: 6px 12px; font-size: 0.9rem"
             >
               Export to Image
             </button>
@@ -389,27 +333,12 @@
         </div>
 
         <div class="category-section" id="section-NB_MN_TAB">
-          <div
-            style="
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              border-bottom: 2px solid #ced0d4;
-              margin-bottom: 1rem;
-              padding-bottom: 0.5rem;
-            "
-          >
-            <h3
-              class="category-title"
-              style="border: none; margin: 0; padding: 0"
-            >
-              NB / MN / TAB
-            </h3>
+          <div class="category-header">
+            <h3 class="category-title">NB / MN / TAB</h3>
             <button
-              class="btn btn-secondary export-btn"
+              class="btn btn-secondary btn-auto btn-sm export-btn"
               data-target="section-NB_MN_TAB"
               data-filename="Requests_NB_MN_TAB"
-              style="width: auto; padding: 6px 12px; font-size: 0.9rem"
             >
               Export to Image
             </button>
@@ -418,27 +347,12 @@
         </div>
 
         <div class="category-section" id="section-Software">
-          <div
-            style="
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              border-bottom: 2px solid #ced0d4;
-              margin-bottom: 1rem;
-              padding-bottom: 0.5rem;
-            "
-          >
-            <h3
-              class="category-title"
-              style="border: none; margin: 0; padding: 0"
-            >
-              Software
-            </h3>
+          <div class="category-header">
+            <h3 class="category-title">Software</h3>
             <button
-              class="btn btn-secondary export-btn"
+              class="btn btn-secondary btn-auto btn-sm export-btn"
               data-target="section-Software"
               data-filename="Requests_Software"
-              style="width: auto; padding: 6px 12px; font-size: 0.9rem"
             >
               Export to Image
             </button>
@@ -447,27 +361,12 @@
         </div>
 
         <div class="category-section" id="section-Lain-lain">
-          <div
-            style="
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              border-bottom: 2px solid #ced0d4;
-              margin-bottom: 1rem;
-              padding-bottom: 0.5rem;
-            "
-          >
-            <h3
-              class="category-title"
-              style="border: none; margin: 0; padding: 0"
-            >
-              Lain-lain
-            </h3>
+          <div class="category-header">
+            <h3 class="category-title">Lain-lain</h3>
             <button
-              class="btn btn-secondary export-btn"
+              class="btn btn-secondary btn-auto btn-sm export-btn"
               data-target="section-Lain-lain"
               data-filename="Requests_Lain_lain"
-              style="width: auto; padding: 6px 12px; font-size: 0.9rem"
             >
               Export to Image
             </button>
