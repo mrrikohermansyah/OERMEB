@@ -176,7 +176,7 @@ function createCombinedCategorySection(category, items) {
     const btnText = data.status === "Active" ? "Close OER" : "Re-Open";
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td style="padding:8px; border-bottom:1px solid #f2f2f2;">
+      <td data-label="User" style="padding:8px; border-bottom:1px solid #f2f2f2;">
         <div style="font-weight:600;">${data.userName || "No Name"}</div>
          <div style="font-size:0.85rem; color:#65676b;">${
            data.userEmail
@@ -202,22 +202,22 @@ function createCombinedCategorySection(category, items) {
             : ""
         }
        </td>
-       <td style="padding:8px; border-bottom:1px solid #f2f2f2;">${
+       <td data-label="Job Title" style="padding:8px; border-bottom:1px solid #f2f2f2;">${
          data.jobTitle || "-"
        }</td>
-      <td style="padding:8px; border-bottom:1px solid #f2f2f2;">${
+      <td data-label="Department" style="padding:8px; border-bottom:1px solid #f2f2f2;">${
         data.department || "-"
       }</td>
-      <td style="padding:8px; border-bottom:1px solid #f2f2f2;">${
+      <td data-label="No Transmittal" style="padding:8px; border-bottom:1px solid #f2f2f2;">${
         data.transmittalNo || "-"
       }</td>
-      <td style="padding:8px; border-bottom:1px solid #f2f2f2;">${
+      <td data-label="Done By IT" style="padding:8px; border-bottom:1px solid #f2f2f2;">${
         data.doneBy || "-"
       }</td>
-      <td style="padding:8px; border-bottom:1px solid #f2f2f2; vertical-align:middle;">
+      <td data-label="Status" style="padding:8px; border-bottom:1px solid #f2f2f2; vertical-align:middle;">
         <span class="status-badge ${statusClass}">${data.status}</span>
       </td>
-      <td style="padding:8px; border-bottom:1px solid #f2f2f2; text-align:right; vertical-align:middle;">
+      <td data-label="Aksi" style="padding:8px; border-bottom:1px solid #f2f2f2; text-align:right; vertical-align:middle;">
         <div style="display:inline-flex; align-items:center; justify-content:flex-end; gap:8px;">
           <button class="btn ${btnClass}" style="width:auto; height:36px; min-height:36px; padding:0 12px; font-size:0.7rem;" data-action="toggle" data-id="${docId}" data-next="${nextStatus}">${btnText}</button>
           <button class="btn" style="width:36px; height:36px; min-height:36px; padding:0; display:inline-flex; align-items:center; justify-content:center; background-color: var(--primary-color); color:#fff; border-radius:6px;" data-action="edit-transmittal" data-id="${docId}" data-current="${
